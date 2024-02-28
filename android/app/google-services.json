@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "764891173644",
+    "project_id": "ecommerce-bts",
+    "storage_bucket": "ecommerce-bts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764891173644:android:2abf5f9ade5454582d2f29",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_bts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZaJ2ivp15asymgWbJmsxyKRPau4WwSnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
