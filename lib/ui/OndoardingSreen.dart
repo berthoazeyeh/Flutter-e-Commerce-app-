@@ -37,7 +37,7 @@ class _LandingPageState extends State<LandingPage> {
                   baseColor: Colors.blueAccent,
                   highlightColor: Colors.black,
                   child: const Text(
-                    "Juarob Shop",
+                    "Juareb Shop",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                   ))
             ],

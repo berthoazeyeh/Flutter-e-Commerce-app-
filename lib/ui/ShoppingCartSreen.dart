@@ -1,12 +1,13 @@
+// ignore: file_names
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_bts/constante/Style.dart';
 import 'package:ecommerce_bts/provider/pannel_provider.dart';
+import 'package:ecommerce_bts/service/delayed_animation.dart';
 import 'package:ecommerce_bts/ui/DetailsItemScreen.dart';
+import 'package:ecommerce_bts/ui/search_place_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_bts/components/BottomNavigationBars.dart';
-// import 'package:text_flutter/constante/Style.dart';
-import 'package:ecommerce_bts/ui/orderPocessScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -108,7 +109,6 @@ class _ShoppingCartSreenState extends State<ShoppingCartSreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Texte en haut
           Container(
             decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: Colors.grey))),
@@ -179,195 +179,205 @@ class _ShoppingCartSreenState extends State<ShoppingCartSreen> {
                                       .produit)), // Remplacez NewScreen() par le widget de votre nouvelle page
                             );
                           },
-                          title: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 80.0, // Largeur fixe
-                                  height: 100.0,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        10.0), // Bords arrondis
-                                    child: CachedNetworkImage(
-                                      height: 100,
-                                      // width: 80,
-                                      imageUrl: item.produit.imagePath,
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover,
+                          title: DelayedAnimation(
+                            delay: 500 + (index - 1) * 500,
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 80.0, // Largeur fixe
+                                    height: 100.0,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          10.0), // Bords arrondis
+                                      child: CachedNetworkImage(
+                                        height: 100,
+                                        // width: 80,
+                                        imageUrl: item.produit.imagePath,
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      placeholder: (context, url) =>
-                                          Shimmer.fromColors(
-                                        baseColor: Colors.grey.shade100,
-                                        highlightColor: Colors.grey.shade200,
-                                        child: Container(
-                                          margin: const EdgeInsets.all(5),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4.0, horizontal: 4.0),
-                                          decoration: Styles.decContainer,
-                                          width: 73,
-                                          height: 65,
-                                          child: null,
+                                        placeholder: (context, url) =>
+                                            Shimmer.fromColors(
+                                          baseColor: Colors.grey.shade100,
+                                          highlightColor: Colors.grey.shade200,
+                                          child: Container(
+                                            margin: const EdgeInsets.all(5),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4.0, horizontal: 4.0),
+                                            decoration: Styles.decContainer,
+                                            width: 73,
+                                            height: 65,
+                                            child: null,
+                                          ),
                                         ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    (item.produit.categorie.nom)
-                                                        .toUpperCase(),
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.grey,
-                                                      fontSize: 15,
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      (item.produit.categorie
+                                                              .nom)
+                                                          .toUpperCase(),
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.grey,
+                                                        fontSize: 15,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      final list =
-                                                          pannelProviders
-                                                              .pannelProduct;
-                                                      if (list.contains(
-                                                          ProductPannel(
-                                                              produit:
-                                                                  item.produit,
-                                                              qte: 1))) {
-                                                        list.remove(
+                                                    InkWell(
+                                                      onTap: () {
+                                                        final list =
+                                                            pannelProviders
+                                                                .pannelProduct;
+                                                        if (list.contains(
                                                             ProductPannel(
                                                                 produit: item
                                                                     .produit,
-                                                                qte: 1));
+                                                                qte: 1))) {
+                                                          list.remove(
+                                                              ProductPannel(
+                                                                  produit: item
+                                                                      .produit,
+                                                                  qte: 1));
+                                                          pannelProviders
+                                                              .updateUser(list);
+                                                        }
                                                         pannelProviders
-                                                            .updateUser(list);
-                                                      }
-                                                      pannelProviders
-                                                          .reduiceQnantity();
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                            "Produit supprimé avec succes",
+                                                            .reduiceQnantity();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                              "Produit supprimé avec succes",
+                                                            ),
                                                           ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: const Icon(
-                                                      Icons.close,
-                                                      color: Colors.grey,
+                                                        );
+                                                      },
+                                                      child: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.grey,
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                item.produit.nom,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.all(0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                "\$${item.qte * item.produit.prix}",
-                                                style: const TextStyle(
-                                                    color: Colors.orangeAccent,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Container(
-                                                padding: const EdgeInsets.all(
-                                                    0.0), // Enlève tout le padding
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey.shade100,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: Wrap(
-                                                  spacing: 0,
-                                                  alignment:
-                                                      WrapAlignment.center,
-                                                  crossAxisAlignment:
-                                                      WrapCrossAlignment.center,
-                                                  children: [
-                                                    IconButton(
-                                                        padding: const EdgeInsets
-                                                                .all(
-                                                            0.0), // Enlève tout le padding
-                                                        onPressed: () {},
-                                                        icon: const Icon(
-                                                          Icons.remove,
-                                                          color: Colors.grey,
-                                                        )),
-                                                    Text("${item.qte}",
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    IconButton(
-                                                        padding: const EdgeInsets
-                                                                .all(
-                                                            0.0), // Enlève tout le padding
-                                                        onPressed: () {},
-                                                        icon: const Icon(
-                                                          Icons.add,
-                                                          color: Colors.grey,
-                                                        )),
                                                   ],
                                                 ),
-                                              )
-                                            ],
+                                                Text(
+                                                  item.produit.nom,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  "\$${item.qte * item.produit.prix}",
+                                                  style: const TextStyle(
+                                                      color:
+                                                          Colors.orangeAccent,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Container(
+                                                  padding: const EdgeInsets.all(
+                                                      0.0), // Enlève tout le padding
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          Colors.grey.shade100,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: Wrap(
+                                                    spacing: 0,
+                                                    alignment:
+                                                        WrapAlignment.center,
+                                                    crossAxisAlignment:
+                                                        WrapCrossAlignment
+                                                            .center,
+                                                    children: [
+                                                      IconButton(
+                                                          padding: const EdgeInsets
+                                                                  .all(
+                                                              0.0), // Enlève tout le padding
+                                                          onPressed: () {},
+                                                          icon: const Icon(
+                                                            Icons.remove,
+                                                            color: Colors.grey,
+                                                          )),
+                                                      Text("${item.qte}",
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                      IconButton(
+                                                          padding: const EdgeInsets
+                                                                  .all(
+                                                              0.0), // Enlève tout le padding
+                                                          onPressed: () {},
+                                                          icon: const Icon(
+                                                            Icons.add,
+                                                            color: Colors.grey,
+                                                          )),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -408,12 +418,12 @@ class _ShoppingCartSreenState extends State<ShoppingCartSreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      pannelProviders.clearPannel();
+                      // pannelProviders.clearPannel();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const OrderProcessScreen()), // Remplacez NewScreen() par le widget de votre nouvelle page
+                                const SearchPlaceScreen()), // Remplacez NewScreen() par le widget de votre nouvelle page
                       );
 
                       // Action à effectuer lorsque le bouton est pressé

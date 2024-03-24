@@ -109,4 +109,41 @@ class ApiClient {
       throw Exception('Erreur lors de l\'authentification');
     }
   }
+
+  static Future<dynamic> searchCurrentPlaceFromGoogleApi(
+    double longitude,
+    double latitude,
+  ) async {
+    final String googleMapsAPIKey = 'AIzaSyBI8oXdc-lbtvRxuVstY6eXG5G9FNCT4fU';
+    final String query =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$googleMapsAPIKey';
+
+    try {
+      final http.Response response = await http.get(Uri.parse(query));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        final List<dynamic> results = data['results'];
+
+        if (results.isNotEmpty) {
+          final Map<String, dynamic> current = results[0];
+          final locationData = {
+            'title': data['plus_code']['compound_code'],
+            'idLieu': current['place_id'],
+            'subTitle': "",
+            'longitude': longitude,
+            'latitude': latitude,
+            'status': data["status"]
+          };
+          print("Location data: $locationData");
+          return (locationData);
+        } else {
+          print("No results found");
+        }
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (error) {
+      print("Error fetching location: $error");
+    } finally {}
+  }
 }

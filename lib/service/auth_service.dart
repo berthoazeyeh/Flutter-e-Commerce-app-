@@ -134,7 +134,8 @@ class AuthService extends ChangeNotifier {
             "https://api-private.atlassian.com/users/7831f16b18333c732e152c74f1863d18/avatar",
         "status": false,
         "token": token,
-        'favorites': []
+        'favorites': [],
+        'timestamp': Timestamp.now()
       });
       return userCredential;
     } on FirebaseAuthException catch (e) {

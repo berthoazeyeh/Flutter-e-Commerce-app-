@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_bts/service/auth_service.dart';
 import 'package:ecommerce_bts/ui/LogInScreen.dart';
+import 'package:ecommerce_bts/ui/user_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -223,27 +224,102 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      showImageSourceDialog(context, authService);
-                      // Action à effectuer lorsque le bouton est pressé (par exemple, modifier le profil)
-                    },
-                    child: const Text('Modifier le profil'),
+                  InkWell(
+                    onTap: () {},
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.person_2_outlined,
+                          size: 40,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            showImageSourceDialog(context, authService);
+                          },
+                          child: const Text(
+                            'Modifier le profil',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Action à effectuer lorsque le bouton est pressé (par exemple, modifier le profil)
-                      signOut();
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        LogInScreen.id,
-                        (route) => false,
-                        arguments: {
-                          'onBoad': false,
-                        },
-                      );
-                    },
-                    child: const Text('Log Out'),
+                  const SizedBox(height: 16),
+                  if (authService.user != null && authService.user!.isAdmin)
+                    InkWell(
+                      onTap: () {},
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.person_2_outlined,
+                            size: 40,
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              // Action à effectuer lorsque le bouton est pressé (par exemple, modifier le profil)
+                              // signOut();
+                              // UserListAdmin
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserListAdmin()),
+                              );
+                            },
+                            child: const Text(
+                              'Administration',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  const SizedBox(height: 16),
+                  InkWell(
+                    onTap: () {},
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.settings,
+                          size: 40,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            // Action à effectuer lorsque le bouton est pressé (par exemple, modifier le profil)
+                            signOut();
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              LogInScreen.id,
+                              (route) => false,
+                              arguments: {
+                                'onBoad': false,
+                              },
+                            );
+                          },
+                          child: const Text(
+                            'Parametres',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

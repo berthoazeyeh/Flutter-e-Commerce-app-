@@ -9,6 +9,7 @@ import 'package:ecommerce_bts/models/produit_categori.dart';
 import 'package:ecommerce_bts/models/user.dart';
 import 'package:ecommerce_bts/provider/pannel_provider.dart';
 import 'package:ecommerce_bts/service/auth_service.dart';
+import 'package:ecommerce_bts/service/delayed_animation.dart';
 import 'package:ecommerce_bts/ui/OndoardingSreen.dart';
 import 'package:ecommerce_bts/ui/add_product_screen.dart';
 import 'package:ecommerce_bts/ui/produit_category_screen.dart';
@@ -293,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 25),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Text(
-                                  'Juarob Shop',
+                                  'Juareb Shop',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
@@ -623,10 +624,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           icon: Icon(
                                                             Icons.favorite,
                                                             color: (authService
-                                                                    .user!
-                                                                    .favorites
-                                                                    .contains(
-                                                                        item
+                                                                            .user !=
+                                                                        null &&
+                                                                    authService
+                                                                        .user!
+                                                                        .favorites
+                                                                        .contains(item
                                                                             .id))
                                                                 ? Colors
                                                                     .redAccent
@@ -749,24 +752,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
-                      builder: (context) => const AddProductScreen(),
-                    ))
-                        .then((value) {
-                      if (kDebugMode) {
-                        print("responce $value");
-                      }
-                    });
-                  },
-                  backgroundColor:
-                      Colors.amberAccent, // Couleur de fond du bouton
-                  foregroundColor: Colors.black, // Couleur de l'icône
-                  shape: const CircleBorder(),
-                  child: const Icon(Icons
-                      .add), // Spécifie que le bouton doit être de forme circulaire
+                floatingActionButton: DelayedAnimation(
+                  delay: 1500,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                        builder: (context) => const AddProductScreen(),
+                      ))
+                          .then((value) {
+                        if (kDebugMode) {
+                          print("responce $value");
+                        }
+                      });
+                    },
+                    backgroundColor:
+                        Colors.amberAccent, // Couleur de fond du bouton
+                    foregroundColor: Colors.black, // Couleur de l'icône
+                    shape: const CircleBorder(),
+                    child: const Icon(Icons
+                        .add), // Spécifie que le bouton doit être de forme circulaire
+                  ),
                 ),
               ),
             ),

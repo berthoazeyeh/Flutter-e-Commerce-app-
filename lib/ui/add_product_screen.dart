@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:ecommerce_bts/models/produit.dart';
 import 'package:ecommerce_bts/models/produit_categori.dart';
 import 'package:ecommerce_bts/service/auth_service.dart';
+import 'package:ecommerce_bts/service/delayed_animation.dart';
 import 'package:ecommerce_bts/service/product_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -186,128 +187,143 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Nom du produit',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                DelayedAnimation(
+                  delay: 500,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Nom du produit',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        productName = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez entrer le nom du produit';
+                      }
+                      return null;
+                    },
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      productName = value;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer le nom du produit';
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Prix (FCFA)',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                DelayedAnimation(
+                  delay: 1000,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Prix (FCFA)',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        productprice =
+                            value.isNotEmpty ? double.parse(value) : 0.0;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez entrer le prix';
+                      } else if (int.parse(value) < 100) {
+                        return 'Le prix doit etre superieur a 100';
+                      }
+                      // You can add more validation for the price format here
+                      return null;
+                    },
                   ),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      productprice =
-                          value.isNotEmpty ? double.parse(value) : 0.0;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer le prix';
-                    } else if (int.parse(value) < 100) {
-                      return 'Le prix doit etre superieur a 100';
-                    }
-                    // You can add more validation for the price format here
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                DelayedAnimation(
+                  delay: 1500,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        productDescription = value;
+                      });
+                    },
+                    maxLines: null,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez entrer la description';
+                      }
+                      return null;
+                    },
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      productDescription = value;
-                    });
-                  },
-                  maxLines: null,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer la description';
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 20),
-                DropdownButtonFormField(
-                  value: _selectedCategory,
-                  items: _categories.map((CategorieProduit category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(category
-                                    .imageUrl), // Utilisez l'URL de l'image de la catégorie
+                DelayedAnimation(
+                  delay: 2000,
+                  child: DropdownButtonFormField(
+                    value: _selectedCategory,
+                    items: _categories.map((CategorieProduit category) {
+                      return DropdownMenuItem(
+                        value: category,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(category
+                                      .imageUrl), // Utilisez l'URL de l'image de la catégorie
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            category.nom,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                overflow: TextOverflow.ellipsis),
-                          ), // Affichez le nom de la catégorie
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    _formKey.currentState!.validate();
-                    setState(() {
-                      _selectedCategory = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Catégorie',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                            const SizedBox(width: 10),
+                            Text(
+                              category.nom,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis),
+                            ), // Affichez le nom de la catégorie
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      _formKey.currentState!.validate();
+                      setState(() {
+                        _selectedCategory = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Catégorie',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                    ),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select a category';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select a category';
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 40),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(vertical: 18)),
-                  onPressed: () {
-                    showImageSourceDialog(context);
-                  },
-                  child: const Text(
-                    'Choisir/Capturer une photo',
-                    style: TextStyle(color: Colors.white),
+                DelayedAnimation(
+                  delay: 2500,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: const EdgeInsets.symmetric(vertical: 18)),
+                    onPressed: () {
+                      showImageSourceDialog(context);
+                    },
+                    child: const Text(
+                      'Choisir/Capturer une photo',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),

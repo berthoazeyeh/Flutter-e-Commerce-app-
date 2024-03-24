@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_bts/models/produit.dart';
 import 'package:ecommerce_bts/provider/pannel_provider.dart';
+import 'package:ecommerce_bts/service/delayed_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,30 +31,32 @@ class _DetailsItemScreenState extends State<DetailsItemScreen> {
         child: Stack(children: [
           Align(
             alignment: Alignment.topCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height * .4,
-              // border: Border.all(color: Color.fromARGB(255, 192, 106, 106)),
-              child: CachedNetworkImage(
-                imageUrl: widget.data.imagePath,
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                      // colorFilter: const ColorFilter.mode(
-                      //     Colors.red, BlendMode.colorBurn)
+            child: DelayedAnimation(
+              delay: 1000,
+              child: Container(
+                height: MediaQuery.of(context).size.height * .4,
+                child: CachedNetworkImage(
+                  imageUrl: widget.data.imagePath,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                        // colorFilter: const ColorFilter.mode(
+                        //     Colors.red, BlendMode.colorBurn)
+                      ),
                     ),
                   ),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
 
-              //  DecorationImage(
-              //   image: AssetImage(widget.data),
-              //   fit: BoxFit.cover,
-              // ),
+                //  DecorationImage(
+                //   image: AssetImage(widget.data),
+                //   fit: BoxFit.cover,
+                // ),
+              ),
             ),
             // child: Image.asset('assets/images/done.jpg')
           ),
@@ -187,36 +190,32 @@ class _DetailsItemScreenState extends State<DetailsItemScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 6.0),
-                  Center(
-                    child: Container(
-                      width: double.infinity,
-                      height: 2.0, // Épaisseur du Divider
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.grey,
-                            Colors.grey,
-                            Colors.orange,
-                          ], // Couleurs du dégradé
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
+                  Container(
+                    width: double.infinity,
+                    height: 2.0,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.grey,
+                          Colors.grey,
+                          Colors.orange,
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
                       ),
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  Center(
-                    child: Text(
-                      (widget.data.dateTime.toLocal().toString())
-                          .split(" ")
-                          .reversed
-                          .join(" "),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          wordSpacing: 4,
-                          letterSpacing: 2),
-                    ),
+                  Text(
+                    (widget.data.dateTime.toLocal().toString())
+                        .split(" ")
+                        .reversed
+                        .join(" "),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        wordSpacing: 4,
+                        letterSpacing: 2),
                   ),
                   const SizedBox(height: 16.0),
                   const Text(
@@ -224,29 +223,27 @@ class _DetailsItemScreenState extends State<DetailsItemScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16.0),
-                  Center(
-                    child: Container(
-                      width: double.infinity,
-                      height: 2.0, // Épaisseur du Divider
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.orange,
-                            Colors.grey,
-                            Colors.grey,
-                          ], // Couleurs du dégradé
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
+                  Container(
+                    width: double.infinity,
+                    height: 2.0, // Épaisseur du Divider
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.orange,
+                          Colors.grey,
+                          Colors.grey,
+                        ], // Couleurs du dégradé
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
                       ),
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  Text(
-                    widget.data.imagePath,
-                    style: const TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                  const SizedBox(height: 6.0),
+                  // Text(
+                  //   widget.data.imagePath,
+                  //   style: const TextStyle(fontWeight: FontWeight.normal),
+                  // ),
+                  // const SizedBox(height: 6.0),
                   Text(
                     widget.data.description,
                     style: const TextStyle(
